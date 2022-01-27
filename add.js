@@ -1,24 +1,24 @@
-const fs = require('fs');
+var express = require('express');
+var app = express();
+var fs = require("fs");
 
-let user = {
-    "user4" : {
-        "name" : "mohit",
-        "password" : "password4",
-        "profession" : "teacher",
-        "id": 4
-     }
-};
+var user = {
+   "user4" : {
+      "name" : "mohit",
+      "password" : "password4",
+      "profession" : "teacher",
+      "id": 4
+   }
+}
 
-// convert JSON object to a string
-const data = JSON.stringify(user, null, 4);
+app.post('/addUser', function (req, res) {
+   // First read existing users.
+   fs.readFile("" + "users.json", function (err, data) {
+      data = JSON.parse( data );
+      data["user4"] = user["user4"];
+      console.log( data );
+      res.end( JSON.stringify(data));
+   });
+})
 
-// write file to disk
-fs.appendFile('./users.json', data, (err) => {
-
-    if (err) {
-        console.log(`Error writing file: ${err}`);
-    } else {
-        console.log(`File is written successfully!`);
-    }
-
-});
+var server = app.listen(8081)
